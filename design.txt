@@ -1,0 +1,31 @@
+core
+-- product app
+-- customer app
+-- checkout app
+
+
+fields:
+
+# product
+1. Product Name
+2. Product Price
+3. Product Image
+4. Product SKU
+5. Product Desc
+6. Product Stock Quantity
+7. Product Size, color (shoe)
+8. Product Type
+
+#Category
+9. Category Name
+
+
+field Checklist:
+[] represents a distinct characteristic of the subject of the table
+[] contain only a single value
+[] cannon be deconstructed into smaller components
+[] should not contain calculated values
+[] is a unique characteristic (there should not be 2 field with same Name)
+[] contains a minimal amt of redundant data
+
+
