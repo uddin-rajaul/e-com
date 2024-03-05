@@ -7,17 +7,28 @@ core
 fields:
 
 # product
-1. Product Name
-2. Product Price
-3. Product Image
-4. Product SKU
-5. Product Desc
-6. Product Stock Quantity
-7. Product Size, color (shoe)
-8. Product Type
+    - Name (CharField)
+    - description (TextField)
+    - Type (CharField)
 
-#Category
-9. Category Name
+# product line
+    - Price (DecimalField)
+    - SKU (CharField)
+    - stock_qty (IntegerField)
+
+# attribute value
+    - value (CharField)
+
+# attribute 
+    - Name (CharField)
+
+#product Image
+    - Name (CharField)
+    - alternative_txt (CharField)
+    - url (ImageField)
+
+# Category
+    - Name (CharField)
 
 
 field Checklist:
