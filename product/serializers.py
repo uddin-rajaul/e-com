@@ -6,7 +6,7 @@ from .models import Brand, Category, Product
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ["name"]
+        fields = "__all__"
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
