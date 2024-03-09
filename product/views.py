@@ -38,6 +38,11 @@ class ProductViewSet(viewsets.ViewSet):
         A Viewset for Product
     """
     queryset = Product.objects.all()
+    lookup_field = "slug"
+
+    def retrieve(self, request, slug=None):
+        serializer = ProductSerializer(self.queryset.filter(slug=slug), many=True)
+        return Response(serializer.data)
 
     @extend_schema(responses=ProductSerializer)
     def list(self, request):
@@ -55,4 +60,6 @@ class ProductViewSet(viewsets.ViewSet):
         """
         serializer = ProductSerializer(self.queryset.filter(category__name=category), many=True)
         return Response(serializer.data)
+    
+    
     
