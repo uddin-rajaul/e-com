@@ -280,3 +280,4 @@ pip-selfcheck.json
 .vscode
 schema.yml
 /migrations/
+/None/
