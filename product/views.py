@@ -49,7 +49,7 @@ class ProductViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, slug=None):
         serializer = ProductSerializer(
-            self.queryset.filter(slug=slug).select_related("category", "brand"),
+            Product.objects.filter(slug=slug).select_related("category", "brand"),
             many=True,
         )
         return Response(serializer.data)
