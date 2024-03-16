@@ -2,7 +2,15 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from .models import Brand, Category, Product, ProductImage, ProductLine
+from .models import (
+    AttrbuteValue,
+    Attribute,
+    Brand,
+    Category,
+    Product,
+    ProductImage,
+    ProductLine,
+)
 
 
 class EditLinkInline(object):
@@ -33,13 +41,17 @@ class ProductAdmin(admin.ModelAdmin):
     ]
 
 
+class AttributeValueInline(admin.TabularInline):
+    model = AttrbuteValue.product_line_attribute_value.through
+
+
 class ProductLineAdmin(admin.ModelAdmin):
-    inlines = [
-        ProductImageInline,
-    ]
+    inlines = [ProductImageInline, AttributeValueInline]
 
 
 admin.site.register(ProductLine, ProductLineAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category)
 admin.site.register(Brand)
+admin.site.register(Attribute)
+admin.site.register(AttrbuteValue)

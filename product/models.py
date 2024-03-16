@@ -53,12 +53,18 @@ class Attribute(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class AttrbuteValue(models.Model):
     attribute_value = models.CharField(max_length=255)
     attribute = models.ForeignKey(
         Attribute, on_delete=models.CASCADE, related_name="attribute_value"
     )
+
+    def __str__(self):
+        return self.attribute_value
 
 
 class ProductLine(models.Model):
@@ -73,14 +79,15 @@ class ProductLine(models.Model):
     attribute_value = models.ManyToManyField(
         AttrbuteValue,
         through="ProductLineAttributeValue",
+        related_name="product_line_attribute_value",
     )
     objects = ActiveQueryset.as_manager()
 
-    def clean(self):
-        qs = ProductLine.objects.filter(product=self.product)
-        for obj in qs:
-            if self.id != obj.id and self.order == obj.order:
-                raise ValidationError("Duplicate value.")
+    # def clean(self):
+    #     qs = ProductLine.objects.filter(product=self.product)
+    #     for obj in qs:
+    #         if self.id != obj.id and self.order == obj.order:
+    #             raise ValidationError("Duplicate value.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
