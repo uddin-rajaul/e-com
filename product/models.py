@@ -64,7 +64,7 @@ class AttrbuteValue(models.Model):
     )
 
     def __str__(self):
-        return self.attribute_value
+        return f"{self.attribute.name}-{self.attribute_value}"
 
 
 class ProductLine(models.Model):
