@@ -49,6 +49,18 @@ class Product(models.Model):
         return self.name
 
 
+class Attribute(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+
+
+class AttrbuteValue(models.Model):
+    attribute_value = models.CharField(max_length=255)
+    attribute = models.ForeignKey(
+        Attribute, on_delete=models.CASCADE, related_name="attribute_value"
+    )
+
+
 class ProductLine(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=5)
     sku = models.CharField(max_length=100)
@@ -58,6 +70,10 @@ class ProductLine(models.Model):
     )
     is_active = models.BooleanField(default=False)
     order = OrderField(unique_for_field="product", blank=True)
+    attribute_value = models.ManyToManyField(
+        AttrbuteValue,
+        through="ProductLineAttributeValue",
+    )
     objects = ActiveQueryset.as_manager()
 
     def clean(self):
@@ -72,6 +88,20 @@ class ProductLine(models.Model):
 
     def __str__(self):
         return str(self.sku)
+
+
+class ProductLineAttributeValue(models.Model):
+    attribute_value = models.ForeignKey(
+        AttrbuteValue,
+        on_delete=models.CASCADE,
+        related_name="product_attribute_value_av",
+    )
+    product_line = models.ForeignKey(
+        ProductLine, on_delete=models.CASCADE, related_name="product_attribute_value_pl"
+    )
+
+    class Meta:
+        unique_together = ("attribute_value", "product_line")
 
 
 class ProductImage(models.Model):
