@@ -57,7 +57,7 @@ class Attribute(models.Model):
         return self.name
 
 
-class AttrbuteValue(models.Model):
+class AttributeValue(models.Model):
     attribute_value = models.CharField(max_length=255)
     attribute = models.ForeignKey(
         Attribute, on_delete=models.CASCADE, related_name="attribute_value"
@@ -77,10 +77,11 @@ class ProductLine(models.Model):
     is_active = models.BooleanField(default=False)
     order = OrderField(unique_for_field="product", blank=True)
     attribute_value = models.ManyToManyField(
-        AttrbuteValue,
+        AttributeValue,
         through="ProductLineAttributeValue",
         related_name="product_line_attribute_value",
     )
+    product_type = models.ForeignKey("ProductType", on_delete=models.PROTECT)
     objects = ActiveQueryset.as_manager()
 
     # def clean(self):
@@ -99,7 +100,7 @@ class ProductLine(models.Model):
 
 class ProductLineAttributeValue(models.Model):
     attribute_value = models.ForeignKey(
-        AttrbuteValue,
+        AttributeValue,
         on_delete=models.CASCADE,
         related_name="product_attribute_value_av",
     )
@@ -131,3 +132,31 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return str(self.order)
+
+
+class ProductType(models.Model):
+    name = models.CharField(max_length=100)
+    attribute = models.ManyToManyField(
+        Attribute,
+        through="ProductTypeAttribute",
+        related_name="product_type_attribute",
+    )
+
+    def __str__(self):
+        return str(self.name)
+
+
+class ProductTypeAttribute(models.Model):
+    product_type = models.ForeignKey(
+        ProductType,
+        on_delete=models.CASCADE,
+        related_name="product_type_attribute_pt",
+    )
+    attribute = models.ForeignKey(
+        Attribute,
+        on_delete=models.CASCADE,
+        related_name="product_type_attribute_at",
+    )
+
+    class Meta:
+        unique_together = ("product_type", "attribute")
